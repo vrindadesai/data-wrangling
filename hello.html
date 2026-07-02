@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P0: Hello World — Data Wrangling 🤠</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html">
+        <div>
+          <div class="site-title">Data Wrangling</div>
+          <div class="site-sub"><a href="https://www.ncssm.edu/summer/summer-accelerator" target="_blank"
+              class="sidebar-sub-link">NCSSM Summer Accelerator 2026</a></div>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Course</div>
+      <a href="index.html">🏠 Home</a>
+      <a href="index.html#schedule">📆 Schedule</a>
+      <a href="index.html#syllabus">📖 Syllabus</a>
+      <a href="#">🏆 Gradescope</a>
+    </nav>
+
+  </aside>
+
+  <!-- ── Main ── -->
+  <div class="main">
+    <div class="content prose">
+
+      <p style="font-size:0.82rem; color: var(--muted); margin-bottom: 20px;">
+        <a href="index.html">← Back to Schedule</a>
+      </p>
+
+      <h1>Hello World <span class="points">P0</span></h1>
+
+      <p>Before you dive into writing programs that process real data, let's make sure everything is working by writing
+        the simplest possible program: one that prints a message to the screen.</p>
+
+      <p>This is also a tradition in programming — the very first program people write in a new language is almost
+        always a "Hello World." It's a quick sanity check that your setup is working and your code runs.</p>
+
+      <hr>
+
+      <h2>0. Prerequisites</h2>
+
+      <p>Before continuing, make sure you have completed the setup guide:</p>
+
+      <ul>
+        <li>Python is installed</li>
+        <li>Visual Studio Code is installed with the Python extension</li>
+        <li>Your <code>data_wrangling</code> folder is open in VS Code</li>
+      </ul>
+
+      <p>If you are unsure about any of these steps, revisit the <a href="setup.html">setup guide</a> before continuing.
+      </p>
+
+      <hr>
+
+      <h2>1. Create Your File</h2>
+
+      <p>In Visual Studio Code, make sure your <code>data_wrangling</code> folder is open in the Explorer sidebar.</p>
+
+      <p>Right-click on the <code>projects</code> folder and select <strong>New File</strong>. Name it exactly:</p>
+
+      <pre><code>hello_world.py</code></pre>
+
+      <p>An empty file will open in the editor. The <code>.py</code> extension tells VS Code (and Python) that this is a
+        Python program.</p>
+
+      <hr>
+
+      <h2>2. Write Your Program</h2>
+
+      <p>In your empty <code>hello_world.py</code> file, write the following line of code:</p>
+
+      <pre><code>print("Hello, world.")</code></pre>
+
+      <p>Save the file (<code>Control+S</code> on Windows, <code>Command+S</code> on Mac).</p>
+
+      <hr>
+
+      <h2>3. Run Your Program</h2>
+
+      <p>Open the VS Code terminal: <strong>View → Terminal</strong>.</p>
+
+      <p>Make sure you are in the <code>data_wrangling</code> directory. Then run your program with the following
+        command:</p>
+
+      <ul>
+        <li><strong>Mac:</strong> <code>python3 -m projects.hello_world</code></li>
+        <li><strong>Windows:</strong> <code>python -m projects.hello_world</code></li>
+      </ul>
+
+      <p>You should see this printed in the terminal:</p>
+
+      <pre><code>Hello, world.</code></pre>
+
+      <p>If you see an error, double-check that:</p>
+      <ul>
+        <li>The filename is exactly <code>hello_world.py</code> (lowercase, underscore, no spaces)</li>
+        <li>The file is saved inside the <code>projects</code> folder</li>
+        <li>The <code>print</code> line matches exactly, including the quotes and parentheses</li>
+      </ul>
+
+      <hr>
+
+      <h2>4. Experiment</h2>
+
+      <p>Try changing the text inside the double quotes to something else — for example:</p>
+
+      <pre><code>print("Hello, Data Wrangling!")</code></pre>
+
+      <p>Save the file and run the command again. You should see your new message. This is the core loop of programming:
+        write, save, run, observe.</p>
+
+      <p>When you're done experimenting, change it back to <code>"Hello, world."</code> before submitting.</p>
+
+      <hr>
+
+      <h2>5. What Is This Code Doing?</h2>
+
+      <ul>
+        <li><code>print</code> is a built-in Python <strong>function</strong> — it displays output to the terminal.</li>
+        <li>The parentheses <code>()</code> pass information to the function — in this case, the text you want to print.
+        </li>
+        <li>The text inside the quotes is called a <strong>string</strong>, a sequence of characters.</li>
+      </ul>
+
+      <p>You'll learn much more about functions and strings in the coming lessons. For now, just appreciate that one
+        line of code can produce visible output — that's the foundation everything else builds on.</p>
+
+      <hr>
+
+      <h2>Submit to Gradescope</h2>
+
+      <p>Submit your <code>hello_world.py</code> file to the P0 assignment in Gradescope. You can use any number of
+        submits to pass all the test cases.</p>
+
+    </div><!-- /.content -->
+  </div><!-- /.main -->
+
+</body>
+
+</html>

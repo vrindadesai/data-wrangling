@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup — Data Wrangling 🤠</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html">
+        <div>
+          <div class="site-title">Data Wrangling</div>
+          <div class="site-sub"><a href="https://www.ncssm.edu/summer/summer-accelerator" target="_blank" class="sidebar-sub-link">NCSSM Summer Accelerator 2026</a></div>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Course</div>
+      <a href="index.html">🏠 Home</a>
+      <a href="index.html#schedule">📆 Schedule</a>
+      <a href="index.html#syllabus">📖 Syllabus</a>
+      <a href="#">🏆 Gradescope</a>
+    </nav>
+
+  </aside>
+
+  <!-- ── Main ── -->
+  <div class="main">
+    <div class="content prose">
+
+      <p style="font-size:0.82rem; color: var(--muted); margin-bottom: 20px;">
+        <a href="index.html">← Back to Schedule</a>
+      </p>
+
+      <h1>Setup Guide</h1>
+
+      <p>This guide walks you through everything you need to do before the course begins. Follow the instructions for your operating system (Windows or macOS).</p>
+
+      <hr>
+
+      <h2>Before You Begin: Update Your Operating System</h2>
+
+      <p>Keeping your OS up to date ensures you have the software features Python and VS Code depend on.</p>
+
+      <p><strong>Windows 10/11</strong></p>
+      <ol>
+        <li>Open the <strong>Start Menu</strong> and go to <strong>Settings &gt; Windows Update</strong>.</li>
+        <li>Click <strong>Check for updates</strong> and install anything available.</li>
+        <li>Restart your computer when prompted.</li>
+      </ol>
+
+      <p><strong>macOS</strong></p>
+      <ol>
+        <li>Open <strong>System Settings</strong> (or <strong>System Preferences</strong> on older Macs).</li>
+        <li>Click <strong>General &gt; Software Update</strong>.</li>
+        <li>Install any available updates and restart if prompted.</li>
+      </ol>
+
+      <hr>
+
+      <h2>Step 1: Install Python</h2>
+
+      <p>Python is the programming language we'll use throughout the course.</p>
+
+      <p><strong>Windows</strong></p>
+      <ol>
+        <li>Go to <a href="https://www.python.org" target="_blank">python.org</a> and click <strong>Downloads</strong>. The site will show a "Download Python for Windows" button — click it.</li>
+        <li>Open the downloaded installer.</li>
+        <li><strong>Important:</strong> On the first screen, check the box that says <strong>"Add Python to PATH"</strong> before clicking anything else. If you skip this, Python won't work correctly.</li>
+        <li>Click <strong>Install Now</strong> and accept the defaults through the rest of the installer.</li>
+        <li>Click <strong>Close</strong> when it finishes.</li>
+      </ol>
+
+      <p><strong>macOS</strong></p>
+      <ol>
+        <li>Go to <a href="https://www.python.org" target="_blank">python.org</a> and click <strong>Downloads</strong>. The site will show a "Download Python for macOS" button — click it.</li>
+        <li>Open the downloaded <code>.pkg</code> file and follow the installer steps (Continue → Agree → Install).</li>
+        <li>Click <strong>Close</strong> when it finishes.</li>
+      </ol>
+
+      <blockquote>
+        <p>Once Python is installed, you can verify the version from the VS Code Terminal after opening your course materials.</p>
+      </blockquote>
+
+      <hr>
+
+      <h2>Step 2: Install Visual Studio Code</h2>
+
+      <p>Visual Studio Code (VS Code) is the text editor we'll use to write and run Python programs.</p>
+
+      <p><strong>Windows</strong></p>
+      <ol>
+        <li>Go to <a href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a> and click <strong>Download for Windows</strong>.</li>
+        <li>Open the installer and accept the license agreement.</li>
+        <li>Click through the defaults until you reach the <strong>Additional Tasks</strong> screen — check <strong>all available boxes</strong>.</li>
+        <li>Click <strong>Install</strong>, then <strong>Finish</strong>.</li>
+      </ol>
+
+      <p><strong>macOS</strong></p>
+      <ol>
+        <li>Go to <a href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a> and click <strong>Download for Mac</strong>.</li>
+        <li>The download creates a <strong>Visual Studio Code</strong> app in your Downloads folder.</li>
+        <li>Drag the <strong>Visual Studio Code</strong> icon into your <strong>Applications</strong> folder.</li>
+        <li>Open Spotlight Search (<code>Command + Space</code>), type <strong>Code</strong>, and open Visual Studio Code. If asked to confirm opening a file downloaded from the internet, click <strong>Open</strong>.</li>
+      </ol>
+
+      <hr>
+
+      <h2>Step 3: Install the Python Extension for VS Code</h2>
+
+      <p>VS Code needs a Python extension to understand and run Python files.</p>
+
+      <ol>
+        <li>Open VS Code.</li>
+        <li>Click the <strong>Extensions</strong> icon in the left sidebar (it looks like four squares).</li>
+        <li>Search for <strong>Python</strong> (by Microsoft).</li>
+        <li>Click <strong>Install</strong>.</li>
+      </ol>
+
+      <hr>
+
+      <h2>Step 4: Get Your Course Materials</h2>
+
+      <ol>
+        <li>Download the course zip file from <strong>Canvas</strong>. It will be called <code>data_wrangling.zip</code>.</li>
+        <li>Find the downloaded file and <strong>unzip/extract</strong> it:
+          <ul>
+            <li><strong>Windows:</strong> Right-click the file and select <strong>Extract All…</strong>, then click <strong>Extract</strong>.</li>
+            <li><strong>macOS:</strong> Double-click the file — it extracts automatically into a folder called <code>data_wrangling</code>.</li>
+          </ul>
+        </li>
+        <li>Open VS Code. Go to <strong>File &gt; Open Folder…</strong> and select the <code>data_wrangling</code> folder you just extracted.</li>
+        <li>If VS Code asks "Do you trust the authors of the files in this folder?", click <strong>Yes, I trust the authors</strong>.</li>
+      </ol>
+
+      <p>You should now see the <code>data_wrangling</code> folder open in the left sidebar of VS Code.</p>
+
+      <hr>
+
+      <h2>You're All Set!</h2>
+
+      <p>Your environment is ready for Data Wrangling. When you come back to work on the course, open VS Code and go to <strong>File &gt; Open Recent</strong> and select <code>data_wrangling</code> to pick up where you left off.</p>
+
+      <p>When you're ready, head over to the <a href="hello.html">P0 writeup</a> to write your first program.</p>
+
+    </div><!-- /.content -->
+  </div><!-- /.main -->
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+title: Data Wrangling
+markdown: kramdown
+kramdown:
+  input: GFM
+permalink: /:basename:output_ext
+exclude:
+  - Gemfile
+  - Gemfile.lock

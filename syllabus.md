@@ -11,9 +11,12 @@ Data Wrangling is a three-week introduction to Python and data science as part o
 
 ## Getting Started
 
-1. Join [Campuswire](https://campuswire.com/c/GA4196760/feed) (join code: 7835) and post a picture under the **Howdy!** post.
-2. Make sure you can access the course on [Gradescope](https://www.gradescope.com/courses/1326648).
-3. Read through the rest of this syllabus and then get started on L0, L1, and P0!
+1. Message me with your preferred email so I can manually add you to Gradescope and Campuswire.
+2. If you have an email that ends in `.edu`, you can join [Campuswire](https://campuswire.com/c/GA4196760/feed) (code: 7835) yourself.
+3. Once you are added to Campuswire, post a picture under the **Howdy!** post.
+4. Make sure you can access the course on [Gradescope](https://www.gradescope.com/courses/1326648).
+5. While you wait for Campuswire and Gradescope access, read through the rest of this syllabus and get started on L0 and L1.
+
 
 ## Course Tools
 

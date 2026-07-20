@@ -22,12 +22,12 @@ Specifically **off-limits** in this project are the following. Making use of any
 
 ## Assignment Outline
 
-1. **`count`** – 10 Points Autograded
-2. **`sum`** – 10 Points Autograded
-3. **`mean`** – 15 Points Autograded
-4. **`max`** – 15 Points Autograded
-5. **`min`** – 15 Points Autograded
-6. **`stdev`** – 15 Points Autograded
+1. **`count`**
+2. **`sum`**
+3. **`mean`**
+4. **`max`**
+5. **`min`**
+6. **`stdev`**
 
 **General Notes:**
 
@@ -90,7 +90,7 @@ def stdev(data):
 
 ---
 
-## 1. `count` — 10 pts
+## 1. `count`
 
 The `count` function returns the number of values in a data set.
 
@@ -113,7 +113,7 @@ This may seem trivial — and it is! But building it as an explicit function mat
 
 ---
 
-## 2. `sum` — 10 pts
+## 2. `sum`
 
 The `sum` function computes the total of all values in a data set.
 
@@ -138,7 +138,7 @@ The `sum` function computes the total of all values in a data set.
 
 ---
 
-## 3. `mean` — 10 pts
+## 3. `mean`
 
 The **mean** (arithmetic average) of a list of numbers is the sum divided by the count.
 
@@ -163,7 +163,7 @@ $$\bar{x} = \frac{x_1 + x_2 + \cdots + x_n}{n}$$
 
 ---
 
-## 4. `max` — 15 pts
+## 4. `max`
 
 The `max` function returns the largest value in a data set. You can assume the list passed to `max` will never be empty.
 
@@ -184,7 +184,7 @@ The `max` function returns the largest value in a data set. You can assume the l
 
 ---
 
-## 5. `min` — 15 pts
+## 5. `min`
 
 The `min` function returns the smallest value in a data set. You can assume the list passed to `min` will never be empty.
 
@@ -205,7 +205,7 @@ The `min` function returns the smallest value in a data set. You can assume the 
 
 ---
 
-## 6. `stdev` — 15 pts
+## 6. `stdev`
 
 The **standard deviation** measures how spread out the values in a data set are. A small standard deviation means the values are clustered close to the mean; a large one means they are spread out.
 

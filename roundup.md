@@ -55,13 +55,13 @@ print(f"{name} scored {score} points.")
 
 ## Assignment Outline
 
-1. **howdy.py** — 20 Points Autograded
-2. **roundup.py** — 50 Points Autograded
-3. **auction.py** — 30 Points Autograded
+1. **howdy.py**
+2. **roundup.py**
+3. **auction.py**
 
 ---
 
-## 1. howdy.py — 20 pts
+## 1. howdy.py
 
 Write a program that asks for the user's name and prints one personalized greeting.
 
@@ -82,7 +82,7 @@ You were born to be on a saddle, Buck!
 
 ---
 
-## 2. roundup.py — 50 pts
+## 2. roundup.py
 
 A rancher wants to project how a starter herd grows over four breeding seasons. Each season, the calves born in the previous season produce new calves at the same rate.
 
@@ -150,7 +150,7 @@ s4 - New: 12 - Total: 1487
 
 ---
 
-## 3. auction.py — 30 pts
+## 3. auction.py
 
 At a cattle auction, each lot is assigned a grade and sold by the pound. Write a quick pricer for the auctioneer.
 

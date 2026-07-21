@@ -5,14 +5,6 @@ title: "E3: String Cleaning"
 
 # String Cleaning — E3
 
-This assignment is optional.
----
-layout: page
-title: "E3: String Cleaning"
----
-
-# String Cleaning — E3
-
 This assignment is optional. Much like "spring cleaning", data scientists invest a lot of time into "string cleaning". In this exercise, you'll write functions that clean up messy playlist data using Python's built-in **string methods**.
 
 ---

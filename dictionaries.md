@@ -1,9 +1,9 @@
 ---
 layout: page
-title: "E1: Dictionaries"
+title: "E1: Dictionaries Practice"
 ---
 
-# Dictionaries — E1
+# Dictionaries Practice — E1
 
 In this exercise you will get some practice writing functions that work with dictionaries — storing, counting, and rearranging data by key instead of by position.
 

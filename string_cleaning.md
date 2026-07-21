@@ -134,9 +134,9 @@ Anything inside `{}` is evaluated as a Python expression:
 **General Notes:**
 
 - To test your functions as you work, you have two options:
-  - **In your program:** Add `print` calls at the bottom of `string_functions.py` and run the file from your `data_wrangling` folder:
-    - **Mac:** `python3 -m exercises.string_functions`
-    - **Windows:** `python -m exercises.string_functions`
+  - **In your program:** Add `print` calls at the bottom of `string_cleaning.py` and run the file from your `data_wrangling` folder:
+    - **Mac:** `python3 -m exercises.string_cleaning`
+    - **Windows:** `python -m exercises.string_cleaning`
     ```
     print(clean_title("  bohemian rhapsody \n"))   # should print Bohemian Rhapsody
     print(make_slug("The Weeknd"))                 # should print the_weeknd
@@ -144,7 +144,7 @@ Anything inside `{}` is evaluated as a Python expression:
     ```
   - **In the REPL:** Open the VS Code terminal (from your `data_wrangling` folder), start Python with `python3` (Mac) or `python` (Windows), then import and call your functions interactively:
     ```
-    from exercises.string_functions import clean_title, make_slug, artist_from_track
+    from exercises.string_cleaning import clean_title, make_slug, artist_from_track
     >>> clean_title("  bohemian rhapsody \n")
     'Bohemian Rhapsody'
     >>> make_slug("The Weeknd")
@@ -161,7 +161,7 @@ In VS Code, make sure your `data_wrangling` folder is open in the Explorer sideb
 Right-click on the `exercises` folder and select **New File**. Name it exactly:
 
 ```
-string_functions.py
+string_cleaning.py
 ```
 
 Copy the following starter code into your new file and save (`Command+S` on Mac, `Control+S` on Windows). The file now defines 6 function stubs — you will fill in all of these below.
@@ -313,7 +313,7 @@ This one is optional. Given a single messy row from a playlist (like you'd get b
 
 ## Submit to Gradescope
 
-Submit your `string_functions.py` file to the **E3** assignment in Gradescope. You can use any number of submits to pass all the test cases. `format_track_summary` is extra work — it's not required to complete the assignment.
+Submit your `string_cleaning.py` file to the **E3** assignment in Gradescope. You can use any number of submits to pass all the test cases. `format_track_summary` is extra work — it's not required to complete the assignment.
 
 Real data is rarely clean. In this exercise you'll write small functions that clean up and reshape messy playlist data using Python's built-in **string methods**.
 
@@ -436,9 +436,9 @@ Anything inside `{}` is evaluated as a Python expression:
 **General Notes:**
 
 - To test your functions as you work, you have two options:
-  - **In your program:** Add `print` calls at the bottom of `string_functions.py` and run the file from your `data_wrangling` folder:
-    - **Mac:** `python3 -m exercises.string_functions`
-    - **Windows:** `python -m exercises.string_functions`
+  - **In your program:** Add `print` calls at the bottom of `string_cleaning.py` and run the file from your `data_wrangling` folder:
+    - **Mac:** `python3 -m exercises.string_cleaning`
+    - **Windows:** `python -m exercises.string_cleaning`
     ```
     print(clean_title("  bohemian rhapsody \n"))   # should print Bohemian Rhapsody
     print(make_slug("The Weeknd"))                 # should print the_weeknd
@@ -446,7 +446,7 @@ Anything inside `{}` is evaluated as a Python expression:
     ```
   - **In the REPL:** Open the VS Code terminal (from your `data_wrangling` folder), start Python with `python3` (Mac) or `python` (Windows), then import and call your functions interactively:
     ```
-    from exercises.string_functions import clean_title, make_slug, artist_from_track
+    from exercises.string_cleaning import clean_title, make_slug, artist_from_track
     >>> clean_title("  bohemian rhapsody \n")
     'Bohemian Rhapsody'
     >>> make_slug("The Weeknd")
@@ -463,7 +463,7 @@ In VS Code, make sure your `data_wrangling` folder is open in the Explorer sideb
 Right-click on the `exercises` folder and select **New File**. Name it exactly:
 
 ```
-string_functions.py
+string_cleaning.py
 ```
 
 Copy the following starter code into your new file and save (`Command+S` on Mac, `Control+S` on Windows). The file now defines 6 function stubs — you will fill in all of these below.
@@ -615,4 +615,4 @@ This one is optional. Given a single messy row from a playlist (like you'd get b
 
 ## Submit to Gradescope
 
-Submit your `string_functions.py` file to the **E3** assignment in Gradescope. You can use any number of submits to pass all the test cases. `format_track_summary` is extra work — it's not required to complete the assignment.
+Submit your `string_cleaning.py` file to the **E3** assignment in Gradescope. You can use any number of submits to pass all the test cases. `format_track_summary` is extra work — it's not required to complete the assignment.

@@ -41,7 +41,7 @@ String methods return **brand new strings**, they never modify the originals. If
 'HELLO'          # only changes because we reassigned it
 ```
 
-### The Methods You'll Need
+### Methods Tour
 
 **`.strip()`** — removes whitespace (spaces, tabs, newlines) from the **start and end** of a string only. The middle is untouched.
 ```

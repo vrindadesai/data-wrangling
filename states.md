@@ -1,346 +1,139 @@
 ---
 layout: page
-title: "E2: State Data"
+title: "E2: States Data Hunt"
 ---
 
-# State Data — E2
+# States Data Hunt — E2
 
-In this exercise you will combine the last two lessons — reading a CSV file and organizing data by row vs. by column — to explore a real data set of the 50 US states using nothing but the `csv` module, lists, and dictionaries.
-
-This is the same states data set from Lesson 12, saved as a CSV file. Each row has a state's name, region, capital city, population, land area, and political party.
+In this exercise you will combine the last two lessons: reading from a CSV file and organizing data by row vs. by column using nested data structures. You'll explore a real dataset based on the US 2020 Census. 🇺🇸
 
 ---
 
 ## Assignment Outline
 
-1. **`clean_row`**
-2. **`add_density`**
-3. **`build_table`**
-4. **`index_by_state`**
-5. **`to_columns`**
-6. **`filter_rows`**
-7. **`proportion`**
-8. **`max_by`**
-9. **`top_n_by`** *(optional)*
+1. **`get_field`**
+2. **`filter_rows`**
+3. **`add_density`** and **`max_by`**
+4. **`count_unique`** *(challenge)*
 
 **General Notes:**
 
-- To test your functions as you work, you have two options:
-  - **In your program:** Add `print` calls at the bottom of `states.py` and run the file from your `data_wrangling` folder:
-    - **Mac:** `python3 -m exercises.states`
-    - **Windows:** `python -m exercises.states`
-    ```
-    table = build_table("data/states.csv")
-    print(table[0])
-    print(max_by(table, "Density")["State"])
-    ```
-  - **In the REPL:** Open the VS Code terminal (from your `data_wrangling` folder), start Python with `python3` (Mac) or `python` (Windows), then import and call your functions interactively:
-    ```
-    from exercises.states import build_table, max_by
-    >>> table = build_table("data/states.csv")
-    >>> max_by(table, "Density")["State"]
-    'New Jersey'
-    ```
-- The grader will evaluate most of your functions by calling them directly with its own small lists and dictionaries — you do not need to worry about generating test data for those. `build_table` is the exception: the grader will call it with a path to its own CSV file, formatted just like `states.csv`.
+- `states.py` is organized into blocks: each block gives you one or two functions to implement, followed by the questions those functions can answer. 
+- After you implement the function(s) in a block, fill in the `...` with an expression that actually **calls** your function(s) to compute the answer and assign it to the given variable.
+- Work through functions in order. Certain questions may require you to call functions from a previous block, but never a future block.
+- The comment next to each variable tells you the expected type (`str`, `int`, `float`, `dict`, ...).
+- To test as you go, add `print` function calls anywhere in  `states.py` and run the file from your `data_wrangling` folder:
+  - **Mac:** `python3 -m exercises.states`
+  - **Windows:** `python -m exercises.states`
+- The grader will evaluate most of your functions directly, calling them with its own small lists and dictionaries so you do not need to worry about generating test data for those. It will also check the final value of every `Q#` variable, make sure each one actually gets assigned to a real answer instead of being left as `...`.
 
 ---
 
-## 0. Create Your File
+## 0. Setup
 
-In VS Code, make sure your `data_wrangling` folder is open in the Explorer sidebar, and that `data/states.csv` exists inside it (the same file from Lesson 12/15 — ask if you don't have it).
+Before you start, get both files from **Canvas**:
 
-Right-click on the `exercises` folder and select **New File**. Name it exactly:
+- Download `states.py` (the starter code) and put it in your `exercises` folder.
+- Download `states.csv` and put it in your `data` folder.
 
+Open `states.py`. `read_csv_rows` is provided — it opens the file, parses it with `csv.DictReader`, and converts `'Population'` and `'Land Area'` to `int` (every value comes back as a string otherwise — that's just how `csv.DictReader` works).
+
+Right near the top of the file, this line is already run for you:
+
+```python
+states = read_csv_rows("data/states.csv")
 ```
-states.py
-```
 
-Copy the following starter code into your new file and save (`Command+S` on Mac, `Control+S` on Windows). `read_csv` is provided and fully working — you'll build everything else on top of it.
+`states` is the whole table stored in a row-oriented format; it is a `list` of `dict`s with one `dict` one per state. That's the variable you'll pass as the first argument to every function you write below. 
 
-```
-import csv
-
-
-# ---------------------------------------------------------------------------
-# Provided — do not change
-# ---------------------------------------------------------------------------
-
-def read_csv(filename):
-    """Read a CSV file and return a list of dictionaries, one per row.
-
-    Every value comes back as a string, even the numeric-looking ones —
-    that's just how csv.DictReader works. clean_row handles the conversion.
-    """
-    rows = []
-    with open(filename, newline='') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            rows.append(row)
-    return rows
-
-
-# ---------------------------------------------------------------------------
-# Functions to implement
-# ---------------------------------------------------------------------------
-
-def clean_row(row):
-    ...
-
-
-def add_density(row):
-    ...
-
-
-def build_table(filename):
-    ...
-
-
-def index_by_state(rows):
-    ...
-
-
-def to_columns(rows):
-    ...
-
-
-def filter_rows(rows, column, value):
-    ...
-
-
-def proportion(rows, column, value):
-    ...
-
-
-def max_by(rows, column):
-    ...
-
-
-def top_n_by(rows, column, n):
-    ...
-```
+Before moving forward, print out your `states` variable to see what is inside of it!
 
 ---
 
-## 1. `clean_row`
+## 1. `get_field`
 
-Rows fresh out of `read_csv` have every value stored as a `str` — including `'Population'` and `'Land Area'`, which we'll want to do math with. `clean_row` converts just those two fields to numbers and leaves everything else untouched.
+Given a table and a state name, `get_field` looks up that state's row and returns the value of one particular column.
 
 **Function signature:**
-- **Name:** `clean_row`
-- **Arguments:** A `dict` with (at least) the string keys `'Population'` and `'Land Area'`, whose values are numeric strings.
-- **Returns:** A new `dict` with the same keys as the input, but with `'Population'` and `'Land Area'` converted to `int`. Every other key/value pair is unchanged.
+- **Name:** `get_field`
+- **Arguments:** A `list` of `dict`s called `table`, a `str` state name, and a `str` `column_name`.
+- **Returns:** The value of `row[column_name]` for the row where `row["State"] == state`.
 
 **Example usage:**
 ```
->>> clean_row({'State': 'Alabama', 'Region': 'South', 'Population': '5024279', 'Land Area': '50645'})
-{'State': 'Alabama', 'Region': 'South', 'Population': 5024279, 'Land Area': 50645}
-```
-
-**Hint:** Don't modify the dictionary you were given — build a new one instead. `dict(row)` gives you a shallow copy you can safely change:
-```
-new_row = dict(row)
-new_row["Population"] = int(new_row["Population"])
-```
-
----
-
-## 2. `add_density`
-
-Given a single **cleaned** row (i.e. one that has already been through `clean_row`), `add_density` returns a new dictionary with an added `'Density'` key — population divided by land area, rounded to 2 decimal places.
-
-**Function signature:**
-- **Name:** `add_density`
-- **Arguments:** A `dict` with (at least) numeric `'Population'` and `'Land Area'` keys.
-- **Returns:** A new `dict` with every original key/value pair, plus a `'Density'` key.
-
-**Example usage:**
-```
->>> add_density({'State': 'Alabama', 'Population': 5024279, 'Land Area': 50645})
-{'State': 'Alabama', 'Population': 5024279, 'Land Area': 50645, 'Density': 99.21}
-```
-
-**Hint:** Same copy-then-add-a-key pattern as `clean_row`. Use Python's built-in `round(value, 2)` to round to 2 decimal places.
-
----
-
-## 3. `build_table`
-
-Tie it all together: read a CSV file and return the fully cleaned, row-oriented table — a list of dictionaries, each with numeric `Population`/`Land Area` and a computed `Density`.
-
-**Function signature:**
-- **Name:** `build_table`
-- **Arguments:** A `str` filename.
-- **Returns:** A `list` of `dict`s — the result of calling `read_csv`, then `clean_row` and `add_density` on every row.
-
-**Example usage:**
-```
->>> table = build_table("data/states.csv")
->>> len(table)
-50
->>> table[0]
-{'State': 'Alabama', 'Region': 'South', 'Capital City': 'Montgomery',
- 'Population': 5024279, 'Land Area': 50645, 'Party': 'Republican', 'Density': 99.21}
-```
-
-**Hint:** Call `read_csv(filename)` to get the raw rows, then loop through them, calling `clean_row` and `add_density` on each one and appending the result to a new list.
-
----
-
-## 4. `index_by_state`
-
-Row-oriented data is normally accessed by position (`table[0]`). `index_by_state` re-organizes it so you can look up any state directly by name instead.
-
-**Function signature:**
-- **Name:** `index_by_state`
-- **Arguments:** A `list` of `dict`s, each with a `'State'` key.
-- **Returns:** A `dict` mapping each row's `'State'` value to that entire row (still a `dict`).
-
-**Example usage:**
-```
->>> rows = [{'State': 'Alabama', 'Density': 99.21}, {'State': 'Alaska', 'Density': 1.29}]
->>> index_by_state(rows)
-{'Alabama': {'State': 'Alabama', 'Density': 99.21}, 'Alaska': {'State': 'Alaska', 'Density': 1.29}}
->>> index_by_state(rows)["Alaska"]["Density"]
+>>> table = [{'State': 'Alabama', 'Density': 99.21}, {'State': 'Alaska', 'Density': 1.29}]
+>>> get_field(table, "Alaska", "Density")
 1.29
 ```
 
-**Hint:** Start with an empty dictionary. Loop through `rows`, and for each `row`, add an entry where the key is `row["State"]` and the value is `row` itself.
+You can assume `state` matches exactly one row.
 
-You can assume every row's `'State'` value is unique.
+**Answer these in `states.py`:**
+- **Q1:** What is the capital city of Texas? This one's already filled in for you as an example — look at `tx_capital_city` in the starter code.
+- **Q2:** What is the population of New York? Fill in `ny_population` in a similar way.
 
----
-
-## 5. `to_columns`
-
-Convert a row-oriented table into its column-oriented equivalent: instead of a list of same-shaped dictionaries, one dictionary mapping each column name to a list of that column's values.
-
-**Function signature:**
-- **Name:** `to_columns`
-- **Arguments:** A `list` of `dict`s, all sharing the same keys.
-- **Returns:** A `dict` mapping each column name to a `list` of that column's values, in row order.
-
-**Example usage:**
-```
->>> rows = [{'State': 'Alabama', 'Density': 99.21}, {'State': 'Alaska', 'Density': 1.29}]
->>> to_columns(rows)
-{'State': ['Alabama', 'Alaska'], 'Density': [99.21, 1.29]}
-```
-
-**Hint:** The column names are the keys of any row — `rows[0].keys()` works, or loop `for column in rows[0]:`. Build a dictionary that maps each column name to an empty list, then loop through every row, appending each field to its matching list.
-
-You can assume `rows` is never empty and that every row has exactly the same keys.
+See the starter code for the rest of the questions and expected variables.
 
 ---
 
-## 6. `filter_rows`
+## 2. `filter_rows`
 
-Given a row-oriented table (or any list of dictionaries), keep only the rows where one particular field matches a target value — this is the building block for asking questions like "which states are in the West?"
+Given a row-oriented table (or any list of dictionaries), create a **new table** with only the rows of the original where one particular field matches a target value.
 
 **Function signature:**
 - **Name:** `filter_rows`
-- **Arguments:** A `list` of `dict`s called `rows`, a `str` column name, and a `value` to match.
-- **Returns:** A new `list` containing only the rows where `row[column] == value`.
+- **Arguments:** A `list` of `dict`s called `table`, a `str` `column_name`, and a `value` to match.
+- **Returns:** A new `list` containing only the rows where `row[column_name] == value`.
 
 **Example usage:**
 ```
->>> rows = [{'State': 'Alabama', 'Region': 'South'}, {'State': 'Alaska', 'Region': 'West'}]
->>> filter_rows(rows, "Region", "West")
-[{'State': 'Alaska', 'Region': 'West'}]
->>> filter_rows(rows, "Region", "Northeast")
+>>> table = [{'State': 'Alabama', 'Region': 'South'}, {'State': 'Alaska', 'Region': 'West'}]
+>>> filter_rows(table, "Region", "Northeast")
 []
+>>> filter_rows(table, "Region", "West")
+[{'State': 'Alaska', 'Region': 'West'}]
 ```
-
-**Hint:** Start with an empty result list. Loop through `rows`, and append `row` to your result whenever `row[column] == value`.
 
 ---
 
-## 7. `proportion`
+## 3. `add_density` and `max_by`
 
-Given a list of rows, return the fraction of them where one field matches a target value — this answers questions like "what proportion of states are Republican?"
+`add_density` returns **a new table** where every row has an added `'Density'` key which is equal to population of a state divided by its land area.
 
-**Function signature:**
-- **Name:** `proportion`
-- **Arguments:** A `list` of `dict`s called `rows`, a `str` column name, and a `value` to match.
-- **Returns:** A `float` between 0 and 1 — the fraction of rows where `row[column] == value`.
-
-**Example usage:**
-```
->>> rows = [{'Party': 'Republican'}, {'Party': 'Republican'}, {'Party': 'Democratic'}]
->>> proportion(rows, "Party", "Republican")
-0.6666666666666666
->>> proportion(rows, "Party", "Independent")
-0.0
-```
-
-**Hint:** Call `filter_rows` to get the matching rows, then divide the length of that result by the length of `rows`. Don't rewrite the filtering loop from scratch — reuse the function you already wrote.
-
-You can assume `rows` is never empty.
-
----
-
-## 8. `max_by`
-
-Given a list of rows, find the entire row that has the largest value for one particular field — this answers questions like "which state has the highest population density?"
-
-**Function signature:**
-- **Name:** `max_by`
-- **Arguments:** A `list` of `dict`s called `rows`, and a `str` column name.
-- **Returns:** The single `dict` (the whole row) with the largest value at `row[column]`.
+**Function signatures:**
+- **`add_density(table)`** → a new `list` of `dict`s, each with a `'Density'` key added.
+- **`max_by(table, column_name)`** → the single `dict` (the whole row) with the largest value at `row[column_name]`.
 
 **Example usage:**
 ```
->>> rows = [{'State': 'Alabama', 'Density': 99.21}, {'State': 'Alaska', 'Density': 1.29}]
->>> max_by(rows, "Density")
+>>> add_density([{'State': 'Alabama', 'Population': 5024279, 'Land Area': 50645}])
+[{'State': 'Alabama', 'Population': 5024279, 'Land Area': 50645, 'Density': 99.21}]
+>>> max_by([{'State': 'Alabama', 'Density': 99.21}, {'State': 'Alaska', 'Density': 1.29}], "Density")
 {'State': 'Alabama', 'Density': 99.21}
 ```
 
-**Hint:** This is the same "assume the first is best, then update as you scan" pattern you used for `max` back in P2 — except now you're comparing `row[column]` for each row, and keeping track of the entire winning row (not just the winning number).
-
-You can assume `rows` is never empty.
+🚨 `states` doesn't have a `'Density'` column yet — you need to call `add_density(states)` to get a table that does before you answer your questions.
 
 ---
 
-## Challenge: `top_n_by`
+## Challenge: `count_unique`
 
-This one is optional. Given a list of rows, a column, and a count `n`, return the `n` rows with the largest values in that column, ordered from largest to smallest — this generalizes questions like "what are the top 3 most-populated states?"
+Please attempt the challenge if you have finished the rest of the parts. Given a table and a column, `count_unique` returns a dictionary mapping every distinct value that appears in that column to the number of rows it appears in.
 
 **Function signature:**
-- **Name:** `top_n_by`
-- **Arguments:** A `list` of `dict`s called `rows`, a `str` column name, and an `int` `n`.
-- **Returns:** A `list` of the `n` rows with the largest `row[column]` values, sorted from largest to smallest. If `rows` has fewer than `n` elements, return all of them, sorted.
+- **Name:** `count_unique`
+- **Arguments:** A `list` of `dict`s called `table`, and a `str` `column_name`.
+- **Returns:** A `dict` mapping each distinct value of `row[column_name]` to a count of how many rows have that value.
 
 **Example usage:**
 ```
->>> rows = [{'State': 'Alabama', 'Population': 5024279},
-...         {'State': 'Alaska', 'Population': 733391},
-...         {'State': 'Arizona', 'Population': 7151502}]
->>> top_n_by(rows, "Population", 2)
-[{'State': 'Arizona', 'Population': 7151502}, {'State': 'Alabama', 'Population': 5024279}]
+>>> table = [{'Region': 'South'}, {'Region': 'South'}, {'Region': 'West'}]
+>>> count_unique(table, "Region")
+{'South': 2, 'West': 1}
 ```
-
-**Hint:** Python's built-in `sorted()` accepts a `key=` argument — a function that tells it what to sort by:
-```
-sorted(rows, key=lambda row: row[column], reverse=True)
-```
-That sorts every row from largest to smallest by `column`. Slice the first `n` of the result with `[:n]`.
-
----
-
-## Explore on Your Own
-
-Once your functions pass their tests, try combining them at the REPL to answer the same kinds of questions we asked with `babypandas` — no submission required, just practice:
-
-- What is the average population density across all states? (`build_table` + `to_columns` + `sum`/`len` on the `"Density"` column)
-- What is Pennsylvania's population density? (`build_table` + `index_by_state`)
-- Which states are in the `"West"` region? (`filter_rows`)
-- What proportion of states are `"Republican"`? (`proportion`)
-- Which Midwestern state has the most land area? (`filter_rows` + `max_by`)
-- What are the 3 most-populated Republican states in the South? (`filter_rows` twice + `top_n_by`)
-
-**Note:** we're skipping "which region has the highest total population?" — answering that well means grouping every state by region first, which is a tool called `groupby` that you'll meet later on (it's what makes `babypandas` and `pandas` so powerful for exactly this kind of question).
 
 ---
 
 ## Submit to Gradescope
 
-Submit your `states.py` file to the **E2** assignment in Gradescope. You can use any number of submits to pass all the test cases. `top_n_by` is extra work — it's not required to complete the assignment.
+Submit your `states.py` file to the **E2** assignment in Gradescope. You can use any number of submits to pass all the test cases.

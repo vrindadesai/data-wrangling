@@ -1,6 +1,7 @@
 ---
 layout: page
 title: "P3: Text Classifier"
+mathjax: true
 ---
 
 # Text Classifier — P3

@@ -1,27 +1,32 @@
+---
+layout: page
+title: "P3: Text Classifier"
+---
+
 # Text Classifier — P3
 
-In this project you will build a program that reads labeled text examples, learns which words tend to appear in each category, and predicts labels for new examples it has never seen — a technique used every day in spam filters, sentiment analyzers, and content moderation systems.
+In this project you will build a program that reads labeled text examples, learns which words tend to appear in each category, and predicts labels for new examples it has never seen.
 
 ---
 
 ## Background
 
-### What Is Machine Learning?
+### What is Machine Learning?
 
-Normally when we write a program, we spell out every rule explicitly. But some problems are too complicated for hand-written rules. Instead of telling the computer *how* to decide, we show it thousands of examples and let it figure out the pattern. That's machine learning.
+Normally when we write a program, we spell out every rule explicitly. But some problems are too complicated for hand-written rules. Instead of telling the computer *how* to decide, we show it thousands of examples and let it figure out the pattern. That's machine learning!
 
-Your classifier is a specific type called a **Naive Bayes Classifier**. It learns which words tend to appear in each category, then uses that knowledge to make predictions.
+Your classifier is a specific type of ML model called a **Naive Bayes Classifier**. It learns which words tend to appear in each category, then uses that knowledge to make predictions.
 
 ### The Bag of Words Model
 
-Your classifier treats each piece of text as a **bag of words** — it only cares *which* words appear, not their order or how many times they repeat. The two sentences below look different, but your classifier treats them as identical:
+Your classifier will treat each piece of text as a **bag of words** which means we only care about *which* words appear, not their order or how many times they repeat. The two sentences below look different, but your classifier will treat them as identical:
 
 > "the cat sat on the mat"
 > "sat mat the on cat the mat"
 
 Both contain the same set of unique words: `{the, cat, sat, on, mat}`.
 
-### How the Classifier Learns
+### How does the classifier learn?
 
 Before your classifier can predict anything, it needs to be **trained**. During training, it reads labeled examples and counts:
 
@@ -29,20 +34,20 @@ Before your classifier can predict anything, it needs to be **trained**. During 
 - How many examples belong to each label (e.g., how many are "positive" vs. "negative").
 - For each label, which words appeared in examples with that label, and how often.
 
-These counts become the classifier's "memory" — everything it needs to make future predictions.
+These counts will be used to make future predictions.
 
 ### Making a Prediction
 
 To predict the label of a new piece of text, the classifier calculates a **score** for every possible label and picks the highest one. First, let's name the counts we'll use:
 
-- $N$ — total number of training examples
-- $N_C$ — number of training examples with label $C$
-- $N_w$ — number of training examples that contain word $w$
-- $N_{C,w}$ — number of training examples with label $C$ that contain word $w$
+- $N$: total number of training examples
+- $N_C$: number of training examples with label $C$
+- $N_w$: number of training examples that contain word $w$
+- $N_{C,w}$: number of training examples with label $C$ that contain word $w$
 
 **1. How common is this label?**
 
-If 80% of your training examples are labeled "sports," then "sports" starts with a natural advantage. We call this the **log-prior**:
+If 80% of your training examples are labeled "negative", then "negative" starts with a natural advantage. We call this the **log-prior**:
 
 $$\ln P(C) = \ln \frac{N_C}{N}$$
 
@@ -54,7 +59,7 @@ $$\ln P(w \mid C) = \ln \frac{N_{C,w}}{N_C}$$
 
 **Handling unseen words:**
 
-Sometimes a word in the test data never appeared in training. Dividing by zero — or taking the log of zero — would crash our program. We handle this with two fallback rules:
+Sometimes a word in the test data never appeared in training. Dividing by zero (or taking the log of zero) would crash our program. There are two fallback rules:
 
 - If $w$ appeared in training but *not* for label $C$ (i.e. $N_{C,w} = 0$ but $N_w > 0$):
 
@@ -68,31 +73,28 @@ $$\ln P(w \mid C) = \ln \frac{1}{N}$$
 
 $$\ln P(C \mid \text{text}) \approx \ln P(C) + \sum_{w \in \text{text}} \ln P(w \mid C)$$
 
-Remember: only count each unique word once (the bag of words model). The classifier predicts whichever label has the highest score. If two labels tie, pick the one that comes first alphabetically.
+The classifier predicts whichever label has the highest score. If two labels tie, pick the one that comes first alphabetically.
 
-> **Why logarithms?** Multiplying many small probabilities together produces numbers so tiny that computers lose precision. Taking the log turns multiplication into addition, which is much more stable.
+> **Why logarithms?** Without logarithms, this formula would entail multiplication (i.e. multiplying probabilities). However, multiplying many small probabilities together would produce numbers that are really tiny! So instead, we use logarithms and add up our log-prior and log-likelihoods.
 
 ---
 
-## Your Dataset
+## Dataset Selection
 
-You will provide your own dataset as a CSV file. Your file must have at least these two columns:
+Pick one of the datasets posted on **Canvas (Files)**, download it, and place it inside your `data` folder. Download the folder that the dataset lives in. For example, if you downloaded the dataset of movie reviews, you would end up with a `data/movies/train.csv` and `data/movies/test.csv` in your workspace. 
+
+See [Dataset Descriptions](data_descriptions.html) for what each one contains and what labels it uses.
+
+In addition to your main dataset, there is a `mini` dataset that is based on the example we saw in class. Download that dataset too so you have a `data/mini/train.csv` and `data/mini/test.csv`.
+
+Each dataset contains the following columns if not more:
 
 | Column | Description |
 |--------|-------------|
-| `label` | The category for this example (e.g., `"positive"`, `"sports"`, `"spam"`) |
-| `content` | The text of the example (lowercase, no punctuation) |
+| `label` | The category for this example (e.g., `"positive"`, `"banned"`, `"disaster"`) |
+| `content` | The text of the example which is lowercase and with no punctuation |
 
-Your file may have other columns — your program should ignore everything except `label` and `content`.
-
-**Requirements:**
-- At least **2 distinct labels**.
-- At least **20 examples per label** in your training file.
-- Text should be lowercase with no punctuation (clean it up beforehand if needed).
-
-Some ideas: movie reviews (positive/negative), news headlines (sports/politics/tech), song lyrics by genre, or product reviews by rating.
-
-**Example rows:**
+**Example rows** from the movies dataset:
 
 ```
 label,content
@@ -102,143 +104,144 @@ positive,great performances and a compelling story highly recommend
 negative,terrible script and the acting was painful to watch
 ```
 
-Split your dataset into two files:
-- `train.csv` — used to train the classifier (~80% of your data)
-- `test.csv` — used to test its predictions (~20% of your data)
+Each dataset contains the following files:
+
+- `train.csv` — used to train the classifier
+- `test.csv` — used to test its predictions
+
+Once a dataset is downloaded, tell `classifier.py` which one to use by setting the `dataset` variable in `main()` to the folder's name. For example, `dataset = "movies"` reads from `data/movies/train.csv` and `data/movies/test.csv`. See **Running Your Program** below.
 
 ---
 
 ## Assignment Outline
 
-1. **`train`**
+You will implement these eight functions:
+
+1. **`find_labels`, `count_labels`, `count_words`, `count_label_words`** (the training functions)
 2. **`log_prior`**
 3. **`log_likelihood`**
 4. **`score`**
 5. **`predict`**
-6. **`evaluate`**
+
+A `main()` function is provided for you. See **Running Your Program** below for what it does and the two variables you're supposed to change.
 
 **General Notes:**
 
 - To test your program as you work, run it from your `data_wrangling` folder:
-  - **Mac:** `python3 -m projects.classifier train.csv test.csv`
-  - **Windows:** `python -m projects.classifier train.csv test.csv`
+  - **Mac:** `python3 -m projects.classifier`
+  - **Windows:** `python -m projects.classifier`
+  - Use the `dataset` and `testing` variables inside `main()` to control which dataset to use and whether testing runs.
 - The grader imports your functions and calls them directly. Make sure each function matches the signature shown below.
 
 ---
 
 ## 0. Get Started
 
-Download `classifier.py` from the assignment page and place it in your `projects` folder inside `data_wrangling`. Open it in VS Code — it already contains the imports, four global variables, and two helper functions you'll need.
+Download `classifier.py` from **Canvas (Files)** and place it in your `projects` folder inside `data_wrangling`. Download one of the datasets from Canvas if you haven't already. Open `classifier.py` in VS Code. The file includes two helper functions, the `main()` function, and stubs for all of the functions you will implement.
 
-**Global variables:** The starter file declares these four variables at the top level so every function can access them without needing to pass them around:
+Every count ($N$, $N_C$, $N_w$, $N_{C,w}$) will be computed by a function and passed into whichever function needs it next as an argument.
 
-```python
-n = 0
-labels = set()
-label_counts = {}
-word_counts = {}
-label_word_counts = {}
-```
+**You will not edit `main()`**, other than the `testing` and `dataset` variables at the top of it.
 
-`train()` fills them in when it runs. Every other function reads from them directly — you never pass them as arguments.
+> What is `main()`?  Using a `main` function as the driver or entrypoint to your program  is a common Python practice. We haven't touched on it heavily, but you will definitely see this in other programs and courses.
 
-**Starter helpers:** Do not change these — use them in your implementations:
+**Helper functions:** You are provided with a `read_csv` function which reads in your dataset from the CSV files. You do not have to call this function, it is already called for you inside `main` to produce a table matching the contents of each file. Do not change the `read_csv` function. 
 
-**Starter helpers:** Do not change these — use them in your implementations:
+You are also provided with a `unique_words` function which you will use in your implementations. See that `unique_words` returns a list of the distinct words in a string. Consider why we would need a function like this. Do not change the `unique_words` function.
 
 ```python
-def read_csv(filename):
-    """Read a CSV file and return a list of dictionaries, one per row.
-
-    Each dictionary maps column names to values. For example, a movie
-    review CSV would produce rows like:
-        [
-            {'label': 'positive', 'content': 'this movie was absolutely wonderful'},
-            {'label': 'negative', 'content': 'boring and predictable i fell asleep'},
-            ...
-        ]
-    Access values with row['label'] and row['content'].
-    """
-    rows = []
-    with open(filename, newline='') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            rows.append(row)
-    return rows
-
-
 def unique_words(text):
-    """Return a set of unique words from a string."""
-    words = set()
+    """Return a list of unique words from a string."""
+    words = []
     for word in text.split():
-        words.add(word)
+        if word not in words:
+            words.append(word)
     return words
 ```
 
-`unique_words` returns the set of distinct words in a string, which is exactly what the bag of words model requires.
+> Notice the `"""docstring"""` — the text between triple quotes right underneath the function signature. This is another convention we haven't utilized but a docstring gives us a brief description of what a function does or returns. Python style checkers often require a docstring.
 
 ---
 
-## 1. `train`
+## 1. Counting Functions for Training
 
-The starter code reads the CSV with `read_csv` and then calls your four helper functions, each of which directly updates the global variables. All you need to do is implement the four helpers below.
-
----
-
-**`find_labels(rows)`**
-
-This function collects every label seen in the training data into the global `labels` set. It takes `rows` and returns nothing — it mutates `labels` directly.
-
-Here is exactly how to write it:
-
-1. Write **one loop** over `rows`.
-2. Inside the loop, get the label: `label = row['label']`.
-3. Add it to the global set: `labels.add(label)`. Sets ignore duplicates automatically, so you don't need to check if it's already there.
+You write four small functions that each take the training `table` and **return** one piece of the count data. `main()` will call all four and hold onto the results.
 
 ---
 
-**`count_labels(rows)`**
+**`find_labels(table)`**
 
-This function counts how many training examples belong to each label. It takes `rows` and returns nothing — it mutates the global `label_counts` directly.
+Return a list of every distinct label seen in the training data, in the order they first appear.
 
-Here is exactly how to write it:
+**Function signature:**
 
-1. Write **one loop** over `rows`. Each iteration gives you one row — a dictionary representing one training example.
-2. Inside the loop, get the label for that row: `label = row['label']`.
-3. Increment the count for that label directly in the global: `label_counts[label] = label_counts.get(label, 0) + 1`.
+- **Name:** `find_labels`
+- **Arguments:** `table`.
+- **Returns:** A `list` of labels, with no duplicates.
 
-After `train` runs, `label_counts` will look like `{'positive': 80, 'negative': 76}`.
-
----
-
-**`count_words(rows)`**
-
-This function counts how many training examples contain each word across the whole dataset. It takes `rows` and returns nothing — it mutates the global `word_counts` directly.
-
-Here is exactly how to write it:
-
-1. Write **two nested loops**. The outer loop is over `rows` — one iteration per training example.
-2. Inside the outer loop, get the set of unique words in that example: `words = unique_words(row['content'])`. This gives you a set of words with no duplicates, so each word in a single example is counted at most once.
-3. The inner loop is over `words` — one iteration per unique word in that example.
-4. Inside the inner loop, increment the count directly in the global: `word_counts[word] = word_counts.get(word, 0) + 1`.
-
-After `train` runs, `word_counts` will look like `{'wonderful': 12, 'boring': 8, 'the': 94, ...}`.
+**Example usage:**
+```
+>>> table = [{'label': 'positive', 'content': 'wonderful acting'}, {'label': 'negative', 'content': 'boring acting'}, {'label': 'positive', 'content': 'wonderful movie'}]
+>>> find_labels(table)
+['positive', 'negative']
+```
 
 ---
 
-**`count_label_words(rows)`**
+**`count_labels(table)`**
 
-This function counts how many examples with each label contain each word. It takes `rows` and returns nothing — it mutates the global `label_word_counts` directly. `label_word_counts` is a nested dictionary: the outer key is a label, the inner key is a word, and the value is a count.
+Return $N_C$ for every label: how many training examples belong to each label.
 
-Here is exactly how to write it:
+**Function signature:**
 
-1. Write **two nested loops**. The outer loop is over `rows`.
-2. Inside the outer loop, get the label (`label = row['label']`) and the set of unique words (`words = unique_words(row['content'])`).
-3. Before the inner loop, make sure the inner dict exists: `if label not in label_word_counts: label_word_counts[label] = {}`.
-4. The inner loop is over `words`.
-5. Inside the inner loop, increment: `label_word_counts[label][word] = label_word_counts[label].get(word, 0) + 1`.
+- **Name:** `count_labels`
+- **Arguments:** `table`.
+- **Returns:** A dict mapping each label to its example count.
 
-After `train` runs, `label_word_counts` will look like `{'positive': {'wonderful': 11, 'the': 48, ...}, 'negative': {'boring': 7, ...}}`.
+**Example usage:**
+```
+>>> table = [{'label': 'positive', 'content': 'wonderful acting'}, {'label': 'negative', 'content': 'boring acting'}, {'label': 'positive', 'content': 'wonderful movie'}]
+>>> count_labels(table)
+{'positive': 2, 'negative': 1}
+```
+
+---
+
+**`count_words(table)`**
+
+Return $N_w$ for every word: how many training examples contain each word, across the whole dataset regardless of label.
+
+**Function signature:**
+
+- **Name:** `count_words`
+- **Arguments:** `table`.
+- **Returns:** A dict mapping each word to its example count.
+
+**Example usage:**
+```
+>>> table = [{'label': 'positive', 'content': 'wonderful acting'}, {'label': 'negative', 'content': 'boring acting'}, {'label': 'positive', 'content': 'wonderful movie'}]
+>>> count_words(table)
+{'wonderful': 2, 'acting': 2, 'boring': 1, 'movie': 1}
+```
+
+---
+
+**`count_label_words(table)`**
+
+Return $N_{C,w}$ for every label/word pair: how many examples with each label contain each word.
+
+**Function signature:**
+
+- **Name:** `count_label_words`
+- **Arguments:** `table`.
+- **Returns:** A nested dict (dict of dicts) where the outer key is a label, the inner key is a word, and the value is a count.
+
+**Example usage:**
+```
+>>> table = [{'label': 'positive', 'content': 'wonderful acting'}, {'label': 'negative', 'content': 'boring acting'}, {'label': 'positive', 'content': 'wonderful movie'}]
+>>> count_label_words(table)
+{'positive': {'wonderful': 2, 'acting': 1, 'movie': 1}, 'negative': {'boring': 1, 'acting': 1}}
+```
 
 ---
 
@@ -249,23 +252,16 @@ Return the log-prior for a given label: how common that label is in the training
 **Function signature:**
 
 - **Name:** `log_prior`
-- **Arguments:** `label`.
+- **Arguments:** `label`, `label_counts`, `n`.
 - **Returns:** $\ln P(C) = \ln \dfrac{N_C}{N}$, as a float.
 
-**Example call:**
-
-```python
-lp = log_prior("positive")
+**Example usage:**
 ```
-
-Here is exactly how to write it:
-
-1. Look up the count for this label: `label_counts[label]` gives you $N_C$ — how many training examples have this label.
-2. `n` is $N$ — the total number of training examples.
-3. Both `label_counts` and `n` are global variables, so you can use them directly without passing them in.
-4. Divide and take the log: `return math.log(label_counts[label] / n)`.
-
-This is a one-liner once you know what the variables mean.
+>>> label_counts = {'positive': 2, 'negative': 2}
+>>> n = 4
+>>> log_prior("positive", label_counts, n)
+-0.6931471805599453
+```
 
 ---
 
@@ -276,54 +272,54 @@ Return $\ln P(w \mid C)$ for a single word and label. This measures how strongly
 **Function signature:**
 
 - **Name:** `log_likelihood`
-- **Arguments:** `word`, `label`.
+- **Arguments:** `word`, `label`, `label_counts`, `word_counts`, `label_word_counts`, `n`.
 - **Returns:** The log-likelihood as a float.
 
-**Example call:**
-
-```python
-ll = log_likelihood("wonderful", "positive")
+**Example usage:**
+```
+>>> label_counts = {'positive': 2, 'negative': 2}
+>>> word_counts = {'wonderful': 2, 'acting': 2, 'movie': 2}
+>>> label_word_counts = {'positive': {'wonderful': 2, 'acting': 1, 'movie': 1}, 'negative': {'acting': 1, 'movie': 1}}
+>>> n = 4
+>>> log_likelihood("wonderful", "positive", label_counts, word_counts, label_word_counts, n)
+0.0
+>>> log_likelihood("wonderful", "negative", label_counts, word_counts, label_word_counts, n)
+-0.6931471805599453
 ```
 
-Here is exactly how to write it:
+> **Important:** Never pass `0` to `math.log()`.
 
-1. Look up the three counts you'll need from the global variables:
-   - $N_{C,w}$: how many examples with `label` contain `word`. Use `label_word_counts.get(label, {}).get(word, 0)` — this safely returns `0` if the label or word isn't in the dictionary.
-   - $N_w$: how many examples (any label) contain `word`. Use `word_counts.get(word, 0)`.
-   - $N_C$: how many examples have this label. Use `label_counts[label]`.
-2. Now write an `if / elif / else` chain to pick the right formula:
-   - **If** $N_{C,w} > 0$: return `math.log(n_cw / n_c)`
-   - **Elif** $N_w > 0$: return `math.log(n_w / n)`
-   - **Else**: return `math.log(1 / n)`
+`wonderful` never appears in a `negative` example. See the **Making a Prediction** section to see how to handle words that are never seen with a specific label or are never seen throughout our training data. 
 
-> **Important:** Never pass `0` to `math.log()` — it will crash. Every case above guarantees a positive numerator, so as long as you check in order you're safe.
+> Hint: You should write a conditional statement as part of your `log_likelihood` implementation and it should have three different cases.
 
 ---
 
 ## 4. `score`
 
-Return the total log-probability score for a piece of text given a label. This is the number the classifier uses to decide which label wins.
+Return the total log-probability score for a piece of text given a label. This is the number the classifier uses to decide which label wins!
 
 $$\ln P(C \mid \text{text}) \approx \ln P(C) + \sum_{w \in \text{text}} \ln P(w \mid C)$$
 
 **Function signature:**
 
 - **Name:** `score`
-- **Arguments:** `text`, `label`.
+- **Arguments:** `text`, `label`, `label_counts`, `word_counts`, `label_word_counts`, `n`.
 - **Returns:** The log-probability score as a float.
 
-**Example call:**
-
-```python
-s = score("this movie was wonderful", "positive")
+**Example usage:**
+```
+>>> label_counts = {'positive': 2, 'negative': 2}
+>>> word_counts = {'wonderful': 2, 'acting': 2, 'movie': 2}
+>>> label_word_counts = {'positive': {'wonderful': 2, 'acting': 1, 'movie': 1}, 'negative': {'acting': 1, 'movie': 1}}
+>>> n = 4
+>>> score("wonderful acting movie", "positive", label_counts, word_counts, label_word_counts, n)
+-2.0794415416798357
+>>> score("wonderful acting movie", "negative", label_counts, word_counts, label_word_counts, n)
+-2.772588722239781
 ```
 
-Here is exactly how to write it:
-
-1. Start the running total with the log-prior: `total = log_prior(label)`.
-2. Write **one loop** over `unique_words(text)`. Each iteration gives you one unique word from the text.
-3. Inside the loop, add the log-likelihood for that word to the total: `total += log_likelihood(word, label)`.
-4. After the loop, return `total`.
+`score` should utilize your `log_prior` and `log_likelihood` functions.
 
 ---
 
@@ -334,58 +330,51 @@ Return the predicted label for a piece of text by computing the score for every 
 **Function signature:**
 
 - **Name:** `predict`
-- **Arguments:** `text`.
+- **Arguments:** `text`, `labels`, `label_counts`, `word_counts`, `label_word_counts`, `n`.
 - **Returns:** The predicted label as a string. Break ties alphabetically.
 
-**Example call:**
-
-```python
-predicted = predict("this movie was wonderful")
-# predicted == "positive"
+**Example usage:**
+```
+>>> labels = ['positive', 'negative']
+>>> label_counts = {'positive': 2, 'negative': 2}
+>>> word_counts = {'wonderful': 2, 'acting': 2, 'movie': 2}
+>>> label_word_counts = {'positive': {'wonderful': 2, 'acting': 1, 'movie': 1}, 'negative': {'acting': 1, 'movie': 1}}
+>>> n = 4
+>>> predict("wonderful acting movie", labels, label_counts, word_counts, label_word_counts, n)
+'positive'
 ```
 
-Here is exactly how to write it:
-
-1. Get the sorted list of labels: `sorted_labels = sorted(labels)`. `labels` is the global set populated by `find_labels` — calling `sorted()` on it gives you a list in alphabetical order.
-2. Before the loop, initialize two variables to track the best answer so far. Set `best_label` to `sorted_labels[0]` and `best_score` to `score(text, sorted_labels[0])`.
-3. Write **one loop** over `sorted_labels[1:]` (skip the first one, you already scored it).
-4. Inside the loop, compute the score for the current label: `s = score(text, label)`. Use a different variable name like `s` — not `score`, which would shadow the function.
-5. If `s` is strictly greater than `best_score`, update both `best_label` and `best_score`.
-6. After the loop, return `best_label`.
-
-Because you sorted the labels alphabetically and only update on *strictly greater*, the first label alphabetically wins any tie.
+`predict` should utilize your `score` function.
 
 ---
 
-## 6. `evaluate`
+## 6. Understanding `main`
 
-Read the test CSV file, run `predict()` on each example, and print the results.
+`main()` calls your counting functions, prints the training summary, and (if `testing` is `True`) loops over the test data. As part of this loop, `main()` calls `predict` and `score` directly. 
 
-**Function signature:**
+**Training**:
 
-- **Name:** `evaluate`
-- **Arguments:** `test_filename`.
-- **Returns:** Nothing. Prints results to the terminal.
+1. Read the training file: `table = read_csv(train_file)`, where `train_file` is built from the `dataset` variable.
+2. Compute `n = len(table)`.
+3. Call each counting function and hold onto the results: `labels = find_labels(table)`, `label_counts = count_labels(table)`, `word_counts = count_words(table)`, `label_word_counts = count_label_words(table)`.
+4. Print the training summary to the **terminal** (see **Output Format** below), using `sorted(labels)` and calling `log_prior(label, label_counts, n)` for each one.
 
-Here is exactly how to write it:
+**Testing** (only runs if `testing` is `True`):
 
-1. Read the test file: `rows = read_csv(test_filename)`.
-2. Create a counter before the loop: `correct = 0`.
-3. Write **one loop** over `rows`. Each iteration gives you one test example.
-4. Inside the loop:
-   - Get the correct label: `correct_label = row['label']`.
-   - Get the text: `text = row['content']`.
-   - Predict the label: `predicted = predict(text)`.
-   - Get the score for the predicted label: `s = score(text, predicted)`.
-   - Print the result line: `print(f"correct = {correct_label}, predicted = {predicted}, score = {s:.1f}")`.
-   - Print the content on the next line with two spaces of indentation: `print(f"  content = {text}")`.
-   - If `predicted == correct_label`, increment `correct`.
-   - Print a blank line after each example: `print()`.
-5. After the loop, print the performance: `print(f"performance: {correct} / {len(rows)} correct")`.
+1. Read the test file: `test_table = read_csv(test_file)`.
+2. Create a counter: `correct = 0`.
+3. Open `projects/prediction.txt` for writing — this **overwrites** whatever was in that file from the last run.
+4. Loop over `test_table`. Each iteration gives you one test example, and for each one it:
+   - Predicts the label: `predicted = predict(text, labels, label_counts, word_counts, label_word_counts, n)`.
+   - Scores the prediction: `s = score(text, predicted, label_counts, word_counts, label_word_counts, n)`.
+   - Writes the result and content lines **into `prediction.txt`**, not the terminal.
+   - Increments `correct` if `predicted == correct_label`.
+5. Writes the final `performance: K / N correct` line into `prediction.txt`.
 
-**Example output:**
+**Example contents of `projects/prediction.txt` after a run:**
 
 ```
+test data:
 correct = positive, predicted = positive, score = -14.2
   content = this movie was absolutely wonderful
 
@@ -399,76 +388,31 @@ performance: 1 / 2 correct
 
 ## Running Your Program
 
-The starter code already includes a `main()` function with the argument handling and the call to `train`. Your job is to fill in the training summary print block:
+`main()` is written for you. The **only** lines you're allowed to change are the two flags at the top:
 
 ```python
 def main():
-    if len(sys.argv) < 2 or len(sys.argv) > 3:
-        print("Usage: python classifier.py TRAIN_FILE [TEST_FILE]")
-        sys.exit(1)
+    # You may edit the following flags but nothing else:
+    testing = False
+    dataset = "movies"
 
-    train_file = sys.argv[1]
-    train(train_file)
-
-    # TODO: print training summary (see Output Format below)
-
-    if len(sys.argv) == 3:
-        test_file = sys.argv[2]
-        print("test data:")
-        evaluate(test_file)
-
-if __name__ == "__main__":
-    main()
+    # The following is provided to you, do not change!
+    #___________________________________________________________________
+    train_file = f"data/{dataset}/train.csv"
+    ...
 ```
 
----
+- **`dataset`** must match the name of a dataset folder you downloaded from Canvas into `data/` (e.g. `"movies"` reads from `data/movies/train.csv`).
+- **`testing`** controls whether the test loop runs at all. Set it to `True` once you want to see predictions on your test set; leave it `False` if you just want to check the training summary.
 
-## Output Format
+Run it from your `data_wrangling` folder:
+- **Mac:** `python3 -m projects.classifier`
+- **Windows:** `python -m projects.classifier`
 
-Round all scores to one decimal place using `f"{value:.1f}"`.
+> What is `if __name__ == "__main__":`? This is a Python convention which allows us to automatically call main() everytime the file is run.
 
-**Always print (training summary):**
-
-```
-trained on N examples
-vocabulary size = V
-
-classes:
-  label1, N examples, log-prior = X.X
-  label2, N examples, log-prior = X.X
-  ...
-```
-
-- `N` is the global `n` — the total number of training examples.
-- `V` (vocabulary size) is the number of unique words seen across all training examples — that's `len(word_counts)`.
-- For the classes block, loop over `sorted(labels)` and print one line per label. `label_counts[label]` gives the example count and `log_prior(label)` gives the log-prior.
-
-**Only print if a test file was given:**
-
-```
-test data:
-  correct = ..., predicted = ..., score = X.X
-  content = ...
-
-performance: K / N correct
-```
-
----
-
-## Tips
-
-**Dictionaries are your main data structure.** Most of what you need to store maps one thing to another (label → count, word → count). Nested dictionaries work well for label-word pairs: `counts[label][word]`.
-
-**`dict.get(key, default)` is your friend.** It returns the value for `key` if it exists, otherwise `default`. This lets you safely look up counts without crashing when a key is missing.
-
-**Log of zero will crash your program.** Never pass `0` to `math.log()`. The three-case fallback in `log_likelihood` is designed so you never have to — make sure you check the cases in order.
-
-**Sort labels alphabetically when printing.** Use Python's built-in `sorted()` function on `label_counts.keys()`.
-
-**Test with a tiny dataset first.** Make a CSV with 6–8 rows by hand so you can verify your counts and scores manually before running on real data.
 
 ---
 
 ## Submit to Gradescope
-
-Submit `classifier.py`, `train.csv`, and `test.csv` to the **P3 - Text Classifier** assignment on Gradescope. Include a short paragraph (3–5 sentences) as a comment at the top of `classifier.py` describing your dataset: what it contains, where you got it, and what labels it uses.
+Submit `classifier.py` to the P2 assignment on Gradescope. You can use any number of submits to pass all the test cases.

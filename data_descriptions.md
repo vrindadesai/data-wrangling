@@ -35,7 +35,7 @@ Tweets which either describe real disasters (hurricanes, floods, fires, etc.) or
 Customer reviews of McDonald's locations.
 
 - **Labels:** `horrible`, `bad`, `okay`, `good`, `great` (5 rating levels)
-- **Columns:** `label`, `text` — note the text column is named `text`, not `content`
+- **Columns:** `label`, `content`
 - **Size:** ~26,500 training rows, 6,600 test rows
 
 ---

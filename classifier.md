@@ -22,6 +22,7 @@ Your classifier is a specific type of ML model called a **Naive Bayes Classifier
 Your classifier will treat each piece of text as a **bag of words** which means we only care about *which* words appear, not their order or how many times they repeat. The two sentences below look different, but your classifier will treat them as identical:
 
 > "the cat sat on the mat"
+>
 > "sat mat the on cat the mat"
 
 Both contain the same set of unique words: `{the, cat, sat, on, mat}`.
@@ -122,8 +123,6 @@ You will implement these eight functions:
 3. **`log_likelihood`**
 4. **`score`**
 5. **`predict`**
-
-A `main()` function is provided for you. See **Running Your Program** below for what it does and the two variables you're supposed to change.
 
 **General Notes:**
 

@@ -5,7 +5,7 @@ title: "P3: Dataset Descriptions"
 
 # Dataset Descriptions
 
-Each dataset below has a `train.csv` and a `test.csv`. Download the one you want from Canvas and place its folder inside your `data` folder — see [Dataset Selection](classifier.html#dataset-selection) in the P3 writeup.
+Each dataset below has a `train.csv` and a `test.csv`. Download the one you want from Canvas and place the entire folder containing the 2 files inside your `data` folder — see [Dataset Selection](classifier.html#dataset-selection) in the P3 writeup.
 
 ---
 

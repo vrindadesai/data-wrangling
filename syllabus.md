@@ -74,3 +74,7 @@ The capstone involves building a **Naive Bayes classifier** for text classificat
 This course is a learning opportunity, and I expect you to rely on provided resources — office hours, instructor support, and the question-answer forum — to complete your coursework. While you are welcome to use the internet to seek out resources (e.g. YouTube videos on Python basics or data science articles), I discourage tools that do the learning and problem-solving for you.
 
 Generative AI tools including ChatGPT and GitHub Copilot for code generation are **prohibited**. Using AI to complete or debug your assignments will make Week 3 — which relies on content from Weeks 1 and 2 — difficult and unsatisfactory.
+
+## Acknowledgments
+
+This course's materials, curriculum, and assignments are adapted from COMP 110 at UNC Chapel Hill,  DSC 10 at UC San Diego, EECS 280 at the University of Michigan. The Naive Bayes text classification capstone is adapted from a similar project developed for EECS 280. I am grateful to the instructors and teaching teams whose work informed the construction of this course.
